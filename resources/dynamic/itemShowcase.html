@@ -1,0 +1,29 @@
+
+<div class="inShowcase">
+
+  <img class="showcaseImage" src="" alt="" />
+  <h2></h2>
+
+  <div class="selector">
+    {% If CurrentADC.PropValue("selectionMode") = "shopping" %}
+    <!-- if mode = shopping -->
+    <div class="symbol minus">
+      -
+    </div>
+    <input readonly class="quantity" value="0">
+    <div class="symbol plus">
+      +
+    </div>
+    {% Else %}
+    <!-- else -->
+    <!-- here mono / multi selector -->
+    <div class="symbol select yes">
+
+    </div>
+    <div class="symbol select no">
+
+    </div>
+    {% EndIf %}
+  </div>
+
+</div>

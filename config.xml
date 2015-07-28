@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control xmlns="http://www.askia.com/ADCSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.askia.com/ADCSchema http://www.askia.com/Downloads/dev/schemas/adc2.0/Config.xsd"
+         version="2.0.0"
+         askiaCompat="5.3.3">
+  <info>
+    <name>adc2-shoppingShelf</name>
+    <guid>7d126875-bdf1-4b19-bd66-83cca9f2fed9</guid>
+    <version>1.0.0</version>
+    <date>2015-06-18</date>
+    <description>
+      <![CDATA[
+        Shopping Shelf ADC 2.0
+      ]]>
+    </description>
+    <author>
+      <![CDATA[
+        Thibault Piriou <thibault@askia.com>,
+      ]]>
+    </author>
+    <company>Askia</company>
+    <helpURL></helpURL>
+    <site></site>
+    <categories>
+      <category>General</category>
+    </categories>
+    <style width="400" height="300"/>
+    <constraints>
+      <constraint on="questions" single="true" multiple="true" numeric="true" date="true" open="true" />
+      <constraint on="controls" responseblock="true" />
+    </constraints>
+  </info>
+
+  <outputs defaultOutput="fallback">
+    <output id="fallback">
+      <description><![CDATA[Fallback when the browser doesn't support Javascript]]></description>
+      <condition><![CDATA[Not(Browser.Support("javascript"))]]></condition>
+      <content fileName="default.html" type="html" mode="dynamic" position="placeholder" />
+    </output>
+
+
+
+    <output id="standard">
+    <description><![CDATA[Standard output with supported Javascript]]></description>
+    <condition><![CDATA[Browser.Support("javascript")]]></condition>
+
+    <content fileName="es5-shim.min.js" type="javascript" mode="share" position="head">
+  		<yield>
+  <![CDATA[<!--[if lt IE 10]>
+              <script type="text/javascript" src="{%= CurrentADC.URLTo("share/es5-shim.min.js") %}"></script>
+              <![endif]-->]]>
+  		</yield>
+  	</content>
+  	<content fileName="jquery-1.11.1.min.js" type="javascript" mode="share" position="head"/>
+  	<content fileName="jquery-ui-1.10.4.custom.min.js" type="javascript" mode="share" position="head"/>
+  	<content fileName="jquery.ui.touch-punch.min.js" type="javascript" mode="share" position="head"/>
+  	<content fileName="jquery.transit.min.js" type="javascript" mode="share" position="head"/>
+
+      <content fileName="jquery.colorbox-min.js" type="javascript" mode="share" position="head" />
+      <content fileName="colorbox.css" type="css" mode="share" position="head" />
+
+
+      <content fileName="standard.html" type="html" mode="dynamic" position="placeholder" />
+      <content fileName="standard_ranking.html" type="html" mode="dynamic" position="none" />
+      <content fileName="standard_no_ranking.html" type="html" mode="dynamic" position="none" />
+      <content fileName="itemShowcase.html" type="html" mode="dynamic" position="none" />
+
+      <content fileName="shoppingShelf.js" type="javascript" mode="static" position="head" />
+      <content fileName="shoppingShelf.css" type="css" mode="static" position="head" />
+
+      <content fileName="bgadc.jpg" type="image" mode="static" position="none"/>
+      <content fileName="overlay.png" type="image" mode="static" position="none"/>
+      <content fileName="shelf1.png" type="image" mode="static" position="none"/>
+      <content fileName="shelf2.png" type="image" mode="static" position="none"/>
+      <content fileName="shelf3.png" type="image" mode="static" position="none"/>
+      <content fileName="shelf4.png" type="image" mode="static" position="none"/>
+
+      <content fileName="cartIcon.png" type="image" mode="static" position="none"/>
+
+      <content fileName="selected.png" type="image" mode="static" position="none"/>
+      <content fileName="pricelabel.png" type="image" mode="static" position="none"/>
+      <content fileName="select_no.png" type="image" mode="static" position="none"/>
+      <content fileName="select_yes.png" type="image" mode="static" position="none"/>
+
+      <content fileName="standard.js" type="javascript" mode="dynamic" position="head" />
+      <content fileName="standard_ranking.js" type="javascript" mode="dynamic" position="none" />
+      <content fileName="standard_no_ranking.js" type="javascript" mode="dynamic" position="none" />
+      <content fileName="standard.css" type="css" mode="dynamic" position="head" />
+
+    </output>
+  </outputs>
+
+  <properties>
+    <category id="general" name="General">
+      <property xsi:type="standardProperty" id="selectionMode" name="Selection Mode" type="string" mode="static">
+        <description>
+          <![CDATA[The type of item selection for the user :
+    -Mono Article Mode : select a unique article
+    -Multiple Article Mode : select several articles, but maximum one of each
+    -Shopping Mode : select several articles, and how many of each you want
+          ]]>
+        </description>
+        <value>shopping</value>
+        <options>
+          <option value="mono" text="Mono Article Mode"/>
+          <option value="multi" text="Multiple Article Mode"/>
+          <option value="shopping" text="Shopping Mode"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="useLimitedMoney" name="Limited Money" type="boolean" mode="static">
+        <description>
+          <![CDATA[If set to Yes, the respondent can only purchase items until a certain amount.
+The amount is set in the Limited Money Amount property.
+/!\ Only available in shopping mode with usePrices active /!\
+          ]]>
+        </description>
+        <value>false</value>
+      </property>
+      <property xsi:type="standardProperty" id="limitedMoneyAmount" name="Limited Money Amount" type="number" mode="static">
+        <description>
+          <![CDATA[The maximum amount of money the user can use to buy articles if Limited Money is set to Yes]]>
+        </description>
+        <value>100</value>
+      </property>
+    </category>
+
+    <category id="themeADC" name="Theme">
+      <property xsi:type="standardProperty" id="theme" name="Theme" type="string" mode="static">
+        <description>
+          <![CDATA[The appearance of the shelf :
+          None is responsive but sober
+          Theme_1 is not responsive but has a shop background
+          ]]>
+        </description>
+        <value></value>
+        <options>
+          <option value="" text="None"/>
+          <option value="1" text="Theme_1"/>
+          <option value="2" text="Theme_2"/>
+          <option value="3" text="Theme_3"/>
+          <option value="4" text="Theme_4"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="bgadc" name="Background Store Picure" type="string" mode="static">
+       <description>
+         <![CDATA[ Use a store picture in the background ]]>
+       </description>
+       <value>1</value>
+       <options>
+         <option value="" text="None"/>
+         <option value="1" text="Store_1"/>
+       </options>
+      </property>
+    </category>
+
+    <category id="articles" name="Articles">
+      <property xsi:type="standardProperty" id="articleBorderColour" name="Article Border Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Border colour]]>
+        </description>
+        <value>161,167,173</value>
+      </property>
+      <property xsi:type="standardProperty" id="articleBorderThickness" name="Article Border Thickness" type="string" mode="static">
+        <description>
+          <![CDATA[The thickness of the border around the articles]]>
+        </description>
+        <value>1px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="articleBorderStyle" name="Article Border Style" type="string" mode="static">
+        <description>
+          <![CDATA[The style of the border around the articles]]>
+        </description>
+        <value>solid</value>
+        <options>
+          <option value="solid" text="Solid"/>
+          <option value="dashed" text="Dashed"/>
+          <option value="dotted" text="Dotted"/>
+          <option value="double" text="Double"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="articleBorderRadius" name="Article Border Radius (round corners)" type="string" mode="static">
+        <description>
+          <![CDATA[The radius of the border around the articles; use it to make round corners]]>
+        </description>
+        <value>10px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="5px" text="5px"/>
+          <option value="10px" text="10px"/>
+          <option value="20px" text="20px"/>
+          <option value="50px" text="50px"/>
+          <option value="100px" text="100px"/>
+        </options>
+      </property>
+
+      <property xsi:type="standardProperty" id="articleSelectedBorderColour" name="Selected Article Border Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Border colour for selected articles]]>
+        </description>
+        <value>161,167,173</value>
+      </property>
+      <property xsi:type="standardProperty" id="articleSelectedBorderThickness" name="selected Article Border Thickness" type="string" mode="static">
+        <description>
+          <![CDATA[The thickness of the border around the selected articles]]>
+        </description>
+        <value>1px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="articleSelectedBorderStyle" name="Selected Article Border Style" type="string" mode="static">
+        <description>
+          <![CDATA[The style of the border around the selected articles]]>
+        </description>
+        <value>solid</value>
+        <options>
+          <option value="solid" text="Solid"/>
+          <option value="dashed" text="Dashed"/>
+          <option value="dotted" text="Dotted"/>
+          <option value="double" text="Double"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="paddingArticles" name="Padding Between Articles" type="string" mode="static">
+        <description>
+          <![CDATA[The empty space size around each article, inside the border]]>
+        </description>
+        <value>0px</value>
+        <options>
+          <option value="0px" text="0px"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="marginArticles" name="Margin Between Articles" type="string" mode="static">
+        <description>
+          <![CDATA[The empty space size around each article, outside the border]]>
+        </description>
+        <value>5px</value>
+        <options>
+          <option value="0px" text="0px"/>
+          <option value="5px" text="5px"/>
+          <option value="10px" text="10px"/>
+          <option value="15px" text="15px"/>
+          <option value="20px" text="20px"/>
+        </options>
+      </property>
+    </category>
+
+    <category id="offset" name="Offset">
+      <property xsi:type="standardProperty" id="nbElemPerRow" name="Number of elements per row" type="number" mode="static">
+        <description>
+          <![CDATA[The number of articles in each row]]>
+        </description>
+        <value>5</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftTopRow1" name="Row 1 Vertical Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The vertical shift for the first row from the top in px]]>
+        </description>
+        <value>115</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftLeftRow1" name="Row 1 Horizontal Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The horizontal shift for the first row from the left in px]]>
+        </description>
+        <value>0</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftTopRow2" name="Row 2 Vertical Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The vertical shift for the second row from the top in px]]>
+        </description>
+        <value>150</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftLeftRow2" name="Row 2 Horizontal Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The horizontal shift for the second row from the left in px]]>
+        </description>
+        <value>0</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftTopRow3" name="Row 3 Vertical Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The vertical shift for the third row from the top in px]]>
+        </description>
+        <value>150</value>
+      </property>
+      <property xsi:type="standardProperty" id="shiftLeftRow3" name="Row 3 Horizontal Shift (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The horizontal shift for the third row from the left in px]]>
+        </description>
+        <value>0</value>
+      </property>
+    </category>
+
+    <category id="images" name="Images">
+      <property xsi:type="standardProperty" id="articlesImageHeight" name="Article image height" type="number" mode="static">
+        <description>
+          <![CDATA[The height for the images in px]]>
+        </description>
+        <value>250</value>
+      </property>
+      <property xsi:type="standardProperty" id="articlesImageWidth" name="Article image width" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the images in px]]>
+        </description>
+        <value>150</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="articlesImageHoverHeight" name="Article image height on hover" type="number" mode="static">
+        <description>
+          <![CDATA[The height for the images in px when mouse is over]]>
+        </description>
+        <value>300</value>
+      </property>
+      <property xsi:type="standardProperty" id="articlesImageHoverWidth" name="Article image width on hover" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the images in px when mouse is over]]>
+        </description>
+        <value>175</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="useShowcase" name="Showcase mode on click" type="boolean" mode="static">
+       <description>
+         <![CDATA[
+         Zoomed-in view of the article with extra data and a selection interface.
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+      <property xsi:type="standardProperty" id="useDiffImage" name="Use a different image for the zoomed-in view" type="boolean" mode="static">
+       <description>
+         <![CDATA[
+         Show a different picture for the on-click preview.
+       ]]>
+       </description>
+       <value>false</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="prefixDiffImage" name="Prefix for the different image name" type="string" mode="static">
+        <description>
+          <![CDATA[
+          The prefix used to find the different image ('picture1.png' -> 'big_picture1'.png)
+          ]]>
+        </description>
+        <value>big_</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="showcaseImageHeight" name="Showcase image height" type="number" mode="static">
+        <description>
+          <![CDATA[The height for the showcased images in px]]>
+        </description>
+        <value>400</value>
+      </property>
+      <property xsi:type="standardProperty" id="showcaseImageWidth" name="Showcase image width" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the showcased images in px]]>
+        </description>
+        <value>250</value>
+      </property>
+    </category>
+
+    <category id="labels" name="Labels">
+      <property xsi:type="standardProperty" id="useLabel" name="Use a label Picture" type="boolean" mode="static">
+       <description>
+         <![CDATA[
+         Display a label background behind the name and price of the article.
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+      <property xsi:type="standardProperty" id="labelWidth" name="Label Width (px)" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the labels under the articles]]>
+        </description>
+        <value>100</value>
+      </property>
+      <property xsi:type="standardProperty" id="labelHeigth" name="Label Heigth (px)" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the labels under the articles]]>
+        </description>
+        <value>55</value>
+      </property>
+      <property xsi:type="standardProperty" id="labelFontSize" name="Label Font Size (px)" type="number" mode="static">
+        <description>
+          <![CDATA[The width for the labels under the articles]]>
+        </description>
+        <value>15</value>
+      </property>
+
+    </category>
+
+
+    <category id="selectionButtons" name="Selection buttons">
+
+      <property xsi:type="standardProperty" id="useSelector" name="Display selection box" type="string" mode="static">
+       <description>
+         <![CDATA[
+         Display a selection box under the articles on the shelf.
+       ]]>
+       </description>
+       <value>always</value>
+       <options>
+         <option value="always" text="Always"/>
+         <option value="onHover" text="On hover"/>
+         <option value="" text="No"/>
+       </options>
+      </property>
+
+      <property xsi:type="standardProperty" id="minusButtonColour" name="Colour for the minus button" type="color" mode="static">
+        <description>
+          <![CDATA[Colour of the Minus (-) button on the selection box of an article]]>
+        </description>
+        <value>255,0,0</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="plusButtonColour" name="Colour for the plus button" type="color" mode="static">
+        <description>
+          <![CDATA[Colour of the Plus (+) button on the selection box of an article]]>
+        </description>
+        <value>0,255,0</value>
+      </property>
+
+    </category>
+
+
+    <category id="buttons" name="Buttons">
+      <property xsi:type="standardProperty" id="useResetButton" name="Use button Reset Shopping Cart" type="boolean" mode="static">
+       <description>
+         <![CDATA[
+         Use a button to reset the shopping cart.
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+      <property xsi:type="standardProperty" id="resetButtonLabel" name="Reset shopping cart button label" type="string" mode="static">
+        <description>
+          <![CDATA[
+          The text displayed on the button for resetting the shopping cart.
+          ]]>
+        </description>
+        <value>Reset shopping cart</value>
+      </property>
+    </category>
+
+    <category id="cart" name="Shopping Cart">
+      <property xsi:type="standardProperty" id="useCart" name="Use Shopping Cart" type="boolean" mode="static">
+       <description>
+         <![CDATA[/!\Shopping Mode only/!\ Use the shopping cart feature, displaying a list of the articles along with selectors when the cart icon is clicked.
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+      <property xsi:type="standardProperty" id="cartBackgroundColour" name="Cart Background Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Background colour]]>
+        </description>
+        <value>255,255,220</value>
+      </property>
+      <property xsi:type="standardProperty" id="cartBorderColour" name="Cart Border Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Border colour]]>
+        </description>
+        <value>67,67,67</value>
+      </property>
+      <property xsi:type="standardProperty" id="cartBorderThickness" name="Cart Border Thickness" type="string" mode="static">
+        <description>
+          <![CDATA[The thickness of the border around the cart articles list]]>
+        </description>
+        <value>1px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="cartBorderStyle" name="Cart Border Style" type="string" mode="static">
+        <description>
+          <![CDATA[The style of the border around the cart articles list]]>
+        </description>
+        <value>solid</value>
+        <options>
+          <option value="solid" text="Solid"/>
+          <option value="dashed" text="Dashed"/>
+          <option value="dotted" text="Dotted"/>
+          <option value="double" text="Double"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="cartBorderRadius" name="Cart Border Radius (round corners)" type="string" mode="static">
+        <description>
+          <![CDATA[The radius of the border around the cart; use it to make round corners]]>
+        </description>
+        <value>10px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="5px" text="5px"/>
+          <option value="10px" text="10px"/>
+          <option value="20px" text="20px"/>
+          <option value="50px" text="50px"/>
+          <option value="100px" text="100px"/>
+        </options>
+      </property>
+    </category>
+
+
+    <category id="price" name="Price">
+      <property xsi:type="standardProperty" id="usePrices" name="Use prices for the articles" type="boolean" mode="static">
+       <description>
+         <![CDATA[
+         Use the prices feature for the articles, displaying the prices and calculating total price.
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="currency" name="Currency used" type="string" mode="static">
+        <description>
+          <![CDATA[
+          The currency you want to use (€, £, $, ...)
+          ]]>
+        </description>
+        <value>$</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="currencyPosition" name="Currency position" type="string" mode="static">
+        <description>
+          <![CDATA[
+          The position of the currency relative to the amount. ($1.99 / 1.99$)
+          ]]>
+        </description>
+        <value>left</value>
+        <options>
+          <option value="left" text="On the left"/>
+          <option value="right" text="On the right" />
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="displayTotalPrice" name="Display total cart price" type="boolean" mode="static">
+       <description>
+         <![CDATA[/!\Requires shopping mode and use Prices/!\ Display total price of the cart at the top of the shelf]]>
+       </description>
+       <value>true</value>
+     </property>
+     <property xsi:type="standardProperty" id="totalPriceOffsetTop" name="Total Price Shift from Top" type="number" mode="static">
+       <description>
+         <![CDATA[The distance between the top of the ADC and the total price (in px)]]>
+       </description>
+       <value>150</value>
+     </property>
+    </category>
+
+
+    <category id="quantityPin" name="Quantity Pin">
+      <property xsi:type="standardProperty" id="quantityPinSize" name="Quantity pin size (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The size of the Quantity pin in px]]>
+        </description>
+        <value>50</value>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinColour" name="Quantity pin Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Quantity pin colour]]>
+        </description>
+        <value>43, 143, 226</value>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinBorderColour" name="Quantity pin Border Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Border colour for the Quantity pin]]>
+        </description>
+        <value>0,0,0</value>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinBorderThickness" name="Quantity pin Border Thickness" type="string" mode="static">
+        <description>
+          <![CDATA[The thickness of the border around the Quantity pin]]>
+        </description>
+        <value>1px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinBorderStyle" name="Quantity pin Border Style" type="string" mode="static">
+        <description>
+          <![CDATA[The style of the border around the Quantity pin]]>
+        </description>
+        <value>solid</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="solid" text="Solid"/>
+          <option value="dashed" text="Dashed"/>
+          <option value="dotted" text="Dotted"/>
+          <option value="double" text="Double"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinTextColour" name="Quantity pin Text Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Quantity pin text colour]]>
+        </description>
+        <value>255, 255, 255</value>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinFontSize" name="Quantity pin Font size" type="number" mode="static">
+        <description>
+          <![CDATA[The font size of the text in the Quantity pin]]>
+        </description>
+        <value>20</value>
+      </property>
+      <property xsi:type="standardProperty" id="quantityPinOpacity" name="Quantity pin Opacity %" type="number" mode="static">
+        <description>
+          <![CDATA[The opacity percentage of the Quantity pin (0 - 100)]]>
+        </description>
+        <value>100</value>
+      </property>
+    </category>
+
+
+
+    <category id="ranking" name="Ranking">
+
+      <property xsi:type="standardProperty" id="useRanking" name="Record items ranking" type="boolean" mode="static">
+       <description>
+         <![CDATA[Record the order in which the items were selected. /!\ You must create a second loop in order to use this property, else an error will show up /!\
+       ]]>
+       </description>
+       <value>false</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="displayRanking" name="Display the ranking to the respondent" type="boolean" mode="static">
+       <description>
+         <![CDATA[Shows to the user the order in which the items were selected. /!\Only in Shopping Mode/!\
+       ]]>
+       </description>
+       <value>true</value>
+      </property>
+
+      <property xsi:type="standardProperty" id="rankingPinSize" name="Ranking pin size (in px)" type="number" mode="static">
+        <description>
+          <![CDATA[The size of the ranking pin in px]]>
+        </description>
+        <value>50</value>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinColour" name="Ranking pin Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Ranking pin colour]]>
+        </description>
+        <value>43, 143, 226</value>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinBorderColour" name="Ranking pin Border Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Border colour for the ranking pin]]>
+        </description>
+        <value>0,0,0</value>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinBorderThickness" name="Ranking pin Border Thickness" type="string" mode="static">
+        <description>
+          <![CDATA[The thickness of the border around the ranking pin]]>
+        </description>
+        <value>1px</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="1px" text="1px"/>
+          <option value="2px" text="2px"/>
+          <option value="3px" text="3px"/>
+          <option value="4px" text="4px"/>
+          <option value="5px" text="5px"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinBorderStyle" name="Ranking pin Border Style" type="string" mode="static">
+        <description>
+          <![CDATA[The style of the border around the ranking pin]]>
+        </description>
+        <value>solid</value>
+        <options>
+          <option value="none" text="None"/>
+          <option value="solid" text="Solid"/>
+          <option value="dashed" text="Dashed"/>
+          <option value="dotted" text="Dotted"/>
+          <option value="double" text="Double"/>
+        </options>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinTextColour" name="Ranking pin Text Colour" type="color" mode="static">
+        <description>
+          <![CDATA[Ranking pin text colour]]>
+        </description>
+        <value>255, 255, 255</value>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinFontSize" name="Ranking pin Font size" type="number" mode="static">
+        <description>
+          <![CDATA[The font size of the text in the ranking pin]]>
+        </description>
+        <value>20</value>
+      </property>
+      <property xsi:type="standardProperty" id="rankingPinOpacity" name="Ranking pin Opacity %" type="number" mode="static">
+        <description>
+          <![CDATA[The opacity percentage of the ranking pin (0 - 100)]]>
+        </description>
+        <value>100</value>
+      </property>
+    </category>
+
+
+
+  </properties>
+</control>

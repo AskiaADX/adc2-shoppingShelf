@@ -1,0 +1,56 @@
+{%
+  Dim i
+  Dim ar = CurrentQuestion.ParentLoop.AvailableResponses
+  Dim inputName
+  Dim inputValue
+  Dim nbElemPerRow =CurrentADC.PropValue("nbElemPerRow")
+  Dim rowNumber = 1
+%}
+
+<div class="articlesList">
+  <div class="row1">
+<ul class="arlist">
+
+
+{%
+  For i = 1 To ar.Count
+%}
+<li>
+  <div class="article">
+    <div class="rankingPin" style="display: none;">
+      X<sup>xx</sup>
+    </div>
+    <div class="quantityPin" style="display: none;">
+      X
+    </div>
+    <div class="imageContener showcaseLink">
+      <div class="imageSelected"></div>
+    </div>
+    <div class="labelContener">
+      <div class="captionContener"></div>
+      <div class="priceContener"></div>
+    </div>
+  </div>
+</li>
+{% If i Mod nbElemPerRow.ToNumber() = 0 Then %}
+{% rowNumber = rowNumber + 1 %}
+  </ul>
+  </div>
+  <div class="row{%= rowNumber %}">
+  <ul class="arlist">
+    {% EndIf %}
+{% Next %}
+
+</ul>
+</div>
+</div>
+
+<div class="inputsQty">
+  {%
+    For i = 1 To ar.Count
+    	inputName = CurrentQuestion.Iteration(i).InputName()
+      inputValue = CurrentQuestion.Iteration(i).InputValue()
+  %}
+  <input hidden type="number" id="{%= inputName %}" name="{%= inputName %}" value="{%= inputValue %}">
+  {% Next %}
+</div>

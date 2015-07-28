@@ -1,0 +1,37 @@
+{%
+  Dim i
+  Dim ar = CurrentQuestion.ParentLoop.AvailableResponses
+  Dim inputName
+  Dim inputValue
+  Dim caption
+  Dim url
+
+%}
+<div id="adc_{%= CurrentADC.InstanceId %}" class="adc-shoppingShelf">
+
+<div class="shoppingCart">
+  Shopping Cart
+  <ul>
+  </ul>
+</div>
+
+<div class="shelfContener">
+    <div class="shoppingCartPrice"></div>
+    <div class="cartIcon"></div>
+
+{% If CurrentADC.PropValue("useRanking") = "1" Then %}
+	{%:= CurrentADC.GetContent("dynamic/standard_ranking.html").ToText()%}
+{% Else %}
+	{%:= CurrentADC.GetContent("dynamic/standard_no_ranking.html").ToText()%}
+{% EndIf %}
+
+</div>
+
+
+
+{% If CurrentADC.PropValue("useResetButton") = "1" Then %}
+<div class="resetButtonBox">
+  <button class="resetButton" type="button">{%= CurrentADC.PropValue("resetButtonLabel") %}</button>
+</div>
+{% EndIf %}
+</div>

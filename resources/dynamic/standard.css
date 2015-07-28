@@ -1,0 +1,209 @@
+/* standard.css */
+{%
+  Dim rankingPinSize =CurrentADC.PropValue("rankingPinSize")
+  Dim rankingPinColour =CurrentADC.PropValue("rankingPinColour")
+  Dim rankingPinBorderColour =CurrentADC.PropValue("rankingPinBorderColour")
+  Dim rankingPinBorderThickness =CurrentADC.PropValue("rankingPinBorderThickness")
+  Dim rankingPinBorderStyle =CurrentADC.PropValue("rankingPinBorderStyle")
+  Dim rankingPinTextColour =CurrentADC.PropValue("rankingPinTextColour")
+  Dim rankingPinFontSize =CurrentADC.PropValue("rankingPinFontSize")
+  Dim rankingPinOpacity =CurrentADC.PropValue("rankingPinOpacity")
+
+  Dim quantityPinSize =CurrentADC.PropValue("quantityPinSize")
+  Dim quantityPinColour =CurrentADC.PropValue("quantityPinColour")
+  Dim quantityPinBorderColour =CurrentADC.PropValue("quantityPinBorderColour")
+  Dim quantityPinBorderThickness =CurrentADC.PropValue("quantityPinBorderThickness")
+  Dim quantityPinBorderStyle =CurrentADC.PropValue("quantityPinBorderStyle")
+  Dim quantityPinTextColour =CurrentADC.PropValue("quantityPinTextColour")
+  Dim quantityPinFontSize =CurrentADC.PropValue("quantityPinFontSize")
+  Dim quantityPinOpacity =CurrentADC.PropValue("quantityPinOpacity")
+
+
+  Dim articleBorderColour =CurrentADC.PropValue("articleBorderColour")
+  Dim articleBorderThickness =CurrentADC.PropValue("articleBorderThickness")
+  Dim articleBorderStyle =CurrentADC.PropValue("articleBorderStyle")
+  Dim articleBorderRadius =CurrentADC.PropValue("articleBorderRadius")
+  Dim articleSelectedBorderColour =CurrentADC.PropValue("articleSelectedBorderColour")
+  Dim articleSelectedBorderThickness =CurrentADC.PropValue("articleSelectedBorderThickness")
+  Dim articleSelectedBorderStyle =CurrentADC.PropValue("articleSelectedBorderStyle")
+  Dim paddingArticles =CurrentADC.PropValue("paddingArticles")
+  Dim marginArticles =CurrentADC.PropValue("marginArticles")
+
+  Dim articlesImageHeight =CurrentADC.PropValue("articlesImageHeight")
+  Dim articlesImageWidth =CurrentADC.PropValue("articlesImageWidth")
+  Dim articlesImageHoverHeight =CurrentADC.PropValue("articlesImageHoverHeight")
+  Dim articlesImageHoverWidth =CurrentADC.PropValue("articlesImageHoverWidth")
+
+  Dim labelFontSize =CurrentADC.PropValue("labelFontSize")
+  Dim labelHeigth =CurrentADC.PropValue("labelHeigth")
+
+
+  Dim	shiftTopRow1 =CurrentADC.PropValue("shiftTopRow1")
+  Dim	shiftLeftRow1 =CurrentADC.PropValue("shiftLeftRow1")
+  Dim shiftTopRow2 =CurrentADC.PropValue("shiftTopRow2")
+  Dim	shiftLeftRow2 =CurrentADC.PropValue("shiftLeftRow2")
+  Dim shiftTopRow3 =CurrentADC.PropValue("shiftTopRow3")
+  Dim	shiftLeftRow3 =CurrentADC.PropValue("shiftLeftRow3")
+
+  Dim	totalPriceOffsetTop =CurrentADC.PropValue("totalPriceOffsetTop")
+
+
+  Dim cartBackgroundColour =CurrentADC.PropValue("cartBackgroundColour")
+  Dim cartBorderColour =CurrentADC.PropValue("cartBorderColour")
+  Dim cartBorderThickness =CurrentADC.PropValue("cartBorderThickness")
+  Dim cartBorderStyle =CurrentADC.PropValue("cartBorderStyle")
+  Dim cartBorderRadius =CurrentADC.PropValue("cartBorderRadius")
+
+
+  Dim minusButtonColour =CurrentADC.PropValue("minusButtonColour")
+  Dim plusButtonColour =CurrentADC.PropValue("plusButtonColour")
+
+  Dim p = 0.8
+
+
+
+%}
+
+.adc-shoppingShelf .article {
+  {% IF articleborderThickness = "none" Then %}
+		border: none;
+	{% Else %}
+		border: {%= articleBorderThickness%} {%= articleBorderStyle%} rgb({%= articleBorderColour%});
+	{% EndIF %}
+  border-radius : {%= articleBorderRadius %};
+  padding: {%= paddingArticles %};
+  margin: {%= marginArticles %};
+}
+.adc-shoppingShelf .article.selected {
+  {% IF CurrentADC.PropValue("articleSelectedBorderThickness") = "none" Then %}
+    border: none !important;
+    {% IF CurrentADC.PropValue("articleBorderThickness") = "none" Then %}
+      margin-left: {%= marginArticles %};
+      margin-right: {%= marginArticles %};
+    {% Else %}
+      margin-left: {%= marginArticles.replace("px","").ToNumber() + articleBorderThickness.replace("px","").ToNumber() %}px;
+      margin-right: {%= marginArticles.replace("px","").ToNumber() + articleBorderThickness.replace("px","").ToNumber() %}px;
+    {% EndIf %}
+  {% Else %}
+    border: {%= articleSelectedBorderThickness%} {%= articleSelectedBorderStyle%} rgb({%= articleSelectedBorderColour%}) !important;
+    {% IF CurrentADC.PropValue("articleBorderThickness") = "none" Then %}
+      margin-left: {%= marginArticles.replace("px","").ToNumber() - articleSelectedBorderThickness.replace("px","").ToNumber() %}px;
+      margin-right: {%= marginArticles.replace("px","").ToNumber() - articleSelectedBorderThickness.replace("px","").ToNumber() %}px;
+    {% Else %}
+      margin-left: {%= marginArticles.replace("px","").ToNumber() + articleBorderThickness.replace("px","").ToNumber() - articleSelectedBorderThickness.replace("px","").ToNumber() %}px;
+      margin-right: {%= marginArticles.replace("px","").ToNumber() + articleBorderThickness.replace("px","").ToNumber() - articleSelectedBorderThickness.replace("px","").ToNumber() %}px;
+    {% EndIf %}
+  {% EndIF %}
+}
+
+.adc-shoppingShelf .imageContener{
+  height: {%= articlesImageHeight %}px ;
+  width: {%= articlesImageWidth %}px ;
+}
+
+.adc-shoppingShelf .articlesList li{
+    float: left;
+    width: {%= articlesImageHoverWidth %}px;
+    height: {%= articlesImageHoverHeight %}px;
+    margin-right: {%= marginArticles %};
+    margin-left: {%= marginArticles %};
+}
+
+.adc-shoppingShelf .articlesList li:hover .imageContener {
+    width: {%= articlesImageHoverWidth %}px;
+    height: {%= articlesImageHoverHeight %}px;
+}
+
+.adc-shoppingShelf .labelContener{
+  font-size: {%= labelFontSize %}px;
+}
+
+.symbol.minus {
+  background-color: rgb({%= minusButtonColour %});
+}
+.symbol.plus {
+  background-color: rgb({%= plusButtonColour %});
+}
+
+.adc-shoppingShelf .quantityPin {
+  {% IF quantityPinBorderThickness = "none" Then %}
+		border: none;
+	{% Else %}
+		border: {%= quantityPinBorderThickness%} {%= quantityPinBorderStyle%} rgb({%= quantityPinBorderColour%});
+	{% EndIF %}
+  width: {%= quantityPinSize %}px;
+  height: {%= quantityPinSize %}px;
+  background-color: rgb({%= quantityPinColour %});
+  color: rgb({%= quantityPinTextColour %});
+  line-height: {%= quantityPinSize.ToNumber() %}px;
+  font-size: {%= quantityPinFontSize %}px;
+
+  opacity: {%= quantityPinOpacity.ToNumber() / 100 %};
+  filter: alpha(opacity={%= quantityPinOpacity %}); /* For IE8 and earlier */
+
+  margin-left : {%= articlesImageWidth.ToNumber() - quantityPinSize.ToNumber() %}px;
+}
+.adc-shoppingShelf li:hover .article .quantityPin{
+  margin-left: {%= articlesImageHoverWidth.ToNumber() - quantityPinSize.ToNumber() %}px;
+}
+
+
+.adc-shoppingShelf .rankingPin {
+  {% IF rankingPinBorderThickness = "none" Then %}
+		border: none;
+	{% Else %}
+		border: {%= rankingPinBorderThickness%} {%= rankingPinBorderStyle%} rgb({%= rankingPinBorderColour%});
+	{% EndIF %}
+  width: {%= rankingPinSize %}px;
+  height: {%= rankingPinSize %}px;
+  background-color: rgb({%= rankingPinColour %});
+  color: rgb({%= rankingPinTextColour %});
+  line-height: {%= p * rankingPinSize.ToNumber() %}px;
+  font-size: {%= rankingPinFontSize %}px;
+
+  opacity: {%= rankingPinOpacity.ToNumber() / 100 %};
+  filter: alpha(opacity={%= rankingPinOpacity %}); /* For IE8 and earlier */
+}
+
+
+.adc-shoppingShelf .row1{
+position: relative;
+top: {%= shiftTopRow1 %}px;
+left: {%= shiftLeftRow1 %}px;
+}
+.adc-shoppingShelf .row2{
+position: relative;
+top: {%= shiftTopRow2 %}px;
+left: {%= shiftLeftRow2 %}px;
+}
+.adc-shoppingShelf .row3{
+position: relative;
+top: {%= shiftTopRow3 %}px;
+left: {%= shiftLeftRow3 %}px;
+}
+
+.adc-shoppingShelf .article .selector{
+  margin-left: {%= (articlesImageWidth.ToNumber() / 2) - 28 %}px;
+  margin-top: {%= 0 - labelHeigth.ToNumber() - 28 %}px;
+}
+.adc-shoppingShelf li:hover  .article .selector{
+  margin-left: {%= (articlesImageHoverWidth.ToNumber() / 2) - 28 %}px;
+}
+
+.adc-shoppingShelf .imageSelected{
+  width: {%= articlesImageWidth %}px;
+  height: {%= articlesImageHeight %}px;
+}
+
+.adc-shoppingShelf li:hover .imageSelected{
+  width: {%= articlesImageHoverWidth %}px;
+  height: {%= articlesImageHoverHeight %}px;
+}
+.adc-shoppingShelf .shoppingCart{
+  background-color: rgb({%= cartBackgroundColour %});
+  border: {%= cartBorderThickness %} {%= cartBorderStyle%} rgb({%= cartBorderColour %});
+  border-radius : {%= cartBorderRadius %};
+}
+.adc-shoppingShelf .shoppingCartPrice{
+  top: {%= totalPriceOffsetTop %}px;
+}
