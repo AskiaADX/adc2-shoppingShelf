@@ -91,12 +91,14 @@
 .adc-shoppingShelf .shoppingCart {
   background-color: antiquewhite;
   z-index: 9;
-  display: none;
   left: 50%;
   top: 50%;
   margin-left: -100px;
   margin-top: -200px;
   position: absolute;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
 }
 .adc-shoppingShelf .cartCaption{
   display: inline;
@@ -180,4 +182,11 @@ background-color: black;
 color: aqua;
 font-family: monospace;
 border: outset aqua 3px;
+}
+
+.adc-shoppingShelf .hidden{
+  display: none;
+}
+.adc-shoppingShelf .visuallyhidden{
+  opacity: 0;
 }

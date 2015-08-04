@@ -466,6 +466,12 @@ The amount is set in the Limited Money Amount property.
        </description>
        <value>true</value>
       </property>
+      <property xsi:type="standardProperty" id="shoppingCartName" name="Name for the shopping cart" type="string" mode="static">
+        <description>
+          <![CDATA[The name displayed on the top of the articles in the cart]]>
+        </description>
+        <value>Shopping Cart</value>
+      </property>
       <property xsi:type="standardProperty" id="cartBackgroundColour" name="Cart Background Colour" type="color" mode="static">
         <description>
           <![CDATA[Background colour]]>

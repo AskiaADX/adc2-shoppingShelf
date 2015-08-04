@@ -122,9 +122,11 @@ $( "#adc_"+options.adcId+" .article .imageSelected" ).hide();
 for (var i = 0; i < options.itemList.length; i++) {
 	shoppingCartElement = $('<li><div class="shoppingCartElement"><div class="cartCaption">'+options.itemList[i]+'</div></div></li>')
 	$( "#adc_"+options.adcId+" .shoppingCart ul" ).append(shoppingCartElement);
-
 	createSelector($("#adc_"+(options.adcId)).find(".article")[i],$("#adc_"+options.adcId+" .shoppingCartElement").last());
 }
+//hide the shopping cart by default
+	$( "#adc_"+options.adcId+" .shoppingCart").addClass("hidden");
+	$( "#adc_"+options.adcId+" .shoppingCart").addClass("visuallyhidden");
 
 //rearrange the shopping cart selectors list, and correct the shape under IE
 $( "#adc_"+options.adcId+" .shoppingCart .selector" ).css("display","inline");
@@ -257,12 +259,24 @@ if(options.theme == ""){
 		if(options.useResetButton) $("#adc_"+options.adcId+' .resetButton').click(function () { resetShoppingCart(); });
 
 
-		//on click on the cart icon, display the cart content
+		//on click on the cart icon, display the cart content, with a lovely transition
 		$("#adc_"+options.adcId+' .cartIcon' ).click(function () {
-			if (	$("#adc_"+options.adcId+' .shoppingCart' ).css("display")=="none") {
-				$("#adc_"+options.adcId+' .shoppingCart' ).show();
+			if (	$("#adc_"+options.adcId+' .shoppingCart' ).hasClass('hidden')) {
+				$("#adc_"+options.adcId+' .shoppingCart' ).removeClass('hidden');
+				setTimeout(function () {
+					$("#adc_"+options.adcId+' .shoppingCart' ).removeClass('visuallyhidden');	}, 20);
 			}else {
-				$("#adc_"+options.adcId+' .shoppingCart' ).hide();
+				$("#adc_"+options.adcId+' .shoppingCart' ).addClass("visuallyhidden");
+
+				if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+					$("#adc_"+options.adcId+' .shoppingCart' ).one("webkitTransitionEnd",function(e){
+						$("#adc_"+options.adcId+' .shoppingCart' ).addClass("hidden");
+					});//for safari
+				}
+				$("#adc_"+options.adcId+' .shoppingCart' ).one("transitionend",function(e){
+					$("#adc_"+options.adcId+' .shoppingCart' ).addClass("hidden");
+				});//for other browsers
+//NB: The transition won't work for IE < 9
 			}
 		 });
 
