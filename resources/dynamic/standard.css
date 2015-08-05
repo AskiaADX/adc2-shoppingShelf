@@ -60,6 +60,7 @@
 
   Dim p = 0.8
 
+  Dim animLength =CurrentADC.PropValue("animLength")
 
 
 %}
@@ -206,4 +207,11 @@ left: {%= shiftLeftRow3 %}px;
 }
 .adc-shoppingShelf .shoppingCartPrice{
   top: {%= totalPriceOffsetTop %}px;
+}
+
+
+
+.articlesList li, .quantityPin, .rankingPin, .article .selector, .imageSelected, .imageContener{
+  -webkit-transition: all {%= animLength %}s;
+  transition: all {%= animLength %}s;
 }

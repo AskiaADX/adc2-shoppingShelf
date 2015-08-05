@@ -262,23 +262,26 @@ if(options.theme == ""){
 		//on click on the cart icon, display the cart content, with a lovely transition
 		$("#adc_"+options.adcId+' .cartIcon' ).click(function () {
 			if (	$("#adc_"+options.adcId+' .shoppingCart' ).hasClass('hidden')) {
-				$("#adc_"+options.adcId+' .shoppingCart' ).removeClass('hidden');
+				$("#adc_"+options.adcId+' .shoppingCart, .cartOverlay' ).removeClass('hidden');
 				setTimeout(function () {
-					$("#adc_"+options.adcId+' .shoppingCart' ).removeClass('visuallyhidden');	}, 20);
-			}else {
-				$("#adc_"+options.adcId+' .shoppingCart' ).addClass("visuallyhidden");
+					$("#adc_"+options.adcId+' .shoppingCart, .cartOverlay' ).removeClass('visuallyhidden');	}, 20);
+			}
+		 });
+				//and hide it on click on the overlay
+			$("#adc_"+options.adcId+' .cartOverlay' ).click(function () {
+				$("#adc_"+options.adcId+' .shoppingCart, .cartOverlay').addClass("visuallyhidden");
 
 				if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
 					$("#adc_"+options.adcId+' .shoppingCart' ).one("webkitTransitionEnd",function(e){
-						$("#adc_"+options.adcId+' .shoppingCart' ).addClass("hidden");
+						$("#adc_"+options.adcId+' .shoppingCart, .cartOverlay' ).addClass("hidden");
 					});//for safari
 				}
 				$("#adc_"+options.adcId+' .shoppingCart' ).one("transitionend",function(e){
-					$("#adc_"+options.adcId+' .shoppingCart' ).addClass("hidden");
+					$("#adc_"+options.adcId+' .shoppingCart, .cartOverlay').addClass("hidden");
 				});//for other browsers
-//NB: The transition won't work for IE < 9
-			}
-		 });
+				//NB: The transition won't work for IE < 9
+			});
+
 
 
 		//monoSelect : select this item and unselect all others (NOT available in shopping mode)

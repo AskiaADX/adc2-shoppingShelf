@@ -152,6 +152,12 @@ The amount is set in the Limited Money Amount property.
          <option value="1" text="Store_1"/>
        </options>
       </property>
+      <property xsi:type="standardProperty" id="animLength" name="Animations length (s)" type="number" mode="static">
+        <description>
+          <![CDATA[The length (in seconds) for the smooth animations when hovering items]]>
+        </description>
+        <value>0.2</value>
+      </property>
     </category>
 
     <category id="articles" name="Articles">
